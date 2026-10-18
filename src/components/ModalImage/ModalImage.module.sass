@@ -1,32 +1,129 @@
-// Importation des fichiers
 @import 'styles/variables'
 @import 'styles/animations'
 
-// Les animations
 .animation__opacity
   opacity: 0
-  animation: animation__opacity .4s ease forwards
+  animation: animation__opacity .3s ease forwards
 
-// Le Sass de la page
 .container
   width: 100vw
   height: 100vh
-  background: rgba($accent-color, .7)
+  height: 100dvh
+  background: rgba(0, 0, 0, 0.92)
+  backdrop-filter: blur(10px)
   position: fixed
   top: 0
   left: 0
-  z-index: 10
+  z-index: 999
   display: none
+  user-select: none
   &.active
-    display: block
+    display: flex
+    align-items: center
+    justify-content: center
+
+.imageWrapper
+  position: relative
+  display: flex
+  align-items: center
+  justify-content: center
+  max-width: 85%
+  max-height: 82%
+  width: auto
+  height: auto
+  touch-action: pan-y
+  @media screen and (max-width: 768px)
+    max-width: 95%
+    max-height: 80%
 
   img
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    max-width: 70%
-    max-height: 70%
+    display: block
+    max-width: 100%
+    max-height: 80vh
     object-fit: contain
-    border: .1rem rgba($primary-color, .5) solid
-    outline: none
+    border: 1px solid rgba(255, 255, 255, 0.25)
+    border-radius: 4px
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8)
+    transition: opacity 0.35s ease, transform 0.35s ease
+    @media screen and (max-width: 768px)
+      max-height: 75vh
+
+.navBtn
+  position: absolute
+  top: 50%
+  transform: translateY(-50%)
+  background: rgba(255, 255, 255, 0.08)
+  border: 1px solid rgba(255, 255, 255, 0.25)
+  color: #ffffff
+  width: 5rem
+  height: 5rem
+  border-radius: 50%
+  display: flex
+  align-items: center
+  justify-content: center
+  cursor: pointer
+  z-index: 1010
+  transition: all 0.25s ease
+  font-size: 2rem
+  &:hover
+    background: #ffffff
+    color: #000000
+    transform: translateY(-50%) scale(1.08)
+    border-color: #ffffff
+  // Trên mobile ẩn hoàn toàn 2 nút theo yêu cầu
+  @media screen and (max-width: 768px)
+    display: none !important
+
+.prevBtn
+  left: 3rem
+  @media screen and (max-width: 1024px)
+    left: 1.5rem
+
+.nextBtn
+  right: 3rem
+  @media screen and (max-width: 1024px)
+    right: 1.5rem
+
+.closeBtn
+  position: absolute
+  top: 2.5rem
+  right: 3.5rem
+  background: transparent
+  border: 1px solid rgba(255, 255, 255, 0.25)
+  color: #ffffff
+  width: 4rem
+  height: 4rem
+  border-radius: 50%
+  display: flex
+  align-items: center
+  justify-content: center
+  cursor: pointer
+  z-index: 1020
+  font-size: 1.8rem
+  transition: all 0.25s ease
+  &:hover
+    background: #ffffff
+    color: #000000
+    border-color: #ffffff
+  @media screen and (max-width: 768px)
+    top: 1.5rem
+    right: 1.5rem
+    width: 3.6rem
+    height: 3.6rem
+    font-size: 1.6rem
+
+.counter
+  position: absolute
+  bottom: 2.5rem
+  left: 50%
+  transform: translateX(-50%)
+  font-family: $main-font
+  font-size: 1.4rem
+  font-weight: 500
+  letter-spacing: 0.2em
+  color: rgba(255, 255, 255, 0.75)
+  z-index: 1010
+  pointer-events: none
+  @media screen and (max-width: 768px)
+    bottom: 1.8rem
+    font-size: 1.2rem

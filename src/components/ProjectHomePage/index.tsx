@@ -99,7 +99,7 @@ const ProjectHomePage = (props: PropsType): JSX.Element => {
           <div
             key={index}
             className={`${styles.container__project__item} ${
-              actualProject == index ? styles.active : ''
+              actualProject === index ? styles.active : ''
             }`}
           >
             <div className={styles.project__item}>

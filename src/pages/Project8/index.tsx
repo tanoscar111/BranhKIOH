@@ -5,75 +5,78 @@ import styles from './Project8.module.sass';
 import Header from 'components/Header';
 import HeaderProject from 'components/HeaderProject';
 import LinkNextProject from 'components/LinkNextProject';
-import ModalImage from 'components/ModalImage';
+import ModalImage, { ModalImageItem } from 'components/ModalImage';
+
+const ortoleImages: ModalImageItem[] = [
+  {
+    src: 'images/ortole-packshot/ortole-packshot-ethan-piboyeux-01.jpg',
+    alt: 'Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux.',
+  },
+  {
+    src: 'images/ortole-packshot/ortole-packshot-ethan-piboyeux-02.jpg',
+    alt: 'Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux.',
+  },
+  {
+    src: 'images/ortole-packshot/ortole-packshot-ethan-piboyeux-03.jpg',
+    alt: 'Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux.',
+  },
+  {
+    src: 'images/ortole-packshot/ortole-packshot-ethan-piboyeux-04.jpg',
+    alt: 'Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux.',
+  },
+  {
+    src: 'images/ortole-packshot/ortole-packshot-ethan-piboyeux-05.jpg',
+    alt: 'Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux.',
+  },
+  {
+    src: 'images/ortole-packshot/ortole-packshot-ethan-piboyeux-06.jpg',
+    alt: 'Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux.',
+  },
+  {
+    src: 'images/ortole-packshot/ortole-packshot-ethan-piboyeux-07.jpg',
+    alt: 'Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux.',
+  },
+  {
+    src: 'images/ortole-packshot/ortole-packshot-ethan-piboyeux-08.jpg',
+    alt: 'Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux.',
+  },
+];
 
 const Project8 = (): JSX.Element => {
-  // Fonction pour être en haut de la page quand on arrive sur une page --> merci React.js
+  // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Les variables pour le modal des images
-  const [imageModal, setImageModal] = useState<string>('');
-  const [altModal, setAltModal] = useState<string>('');
+  // Modal slide state
+  const [modalIndex, setModalIndex] = useState<number>(0);
   const [displayModal, setDisplayModal] = useState<boolean>(false);
 
-  // Fonction pour changer l'image en fonction de l'image sur laquelle on clique
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleImage = (e: any) => {
-    // On affiche le modal uniquement si l'écran est supérieur à 900px --> quand on est en row
-    if (window.innerWidth > 900) {
-      setImageModal((e.target as HTMLImageElement).src);
-      setAltModal((e.target as HTMLImageElement).alt);
-      setDisplayModal(true);
-    }
+  // Mở modal slide từ ảnh được click
+  const handleOpenModal = (index: number) => {
+    setModalIndex(index);
+    setDisplayModal(true);
   };
-
-  // Fonction pour cacher l'image au clique ou au scroll
-  useEffect(() => {
-    // On désactive l'image si et seulement si l'image est déjà activé
-    const clickOrScrollHandler = () => {
-      if (displayModal) {
-        setDisplayModal(false);
-      }
-    };
-
-    // On utilie un listener pour chaque clique
-    window.addEventListener('click', clickOrScrollHandler, false);
-
-    // On utilie un listener en fonction du navigateur
-    // IE9, Chrome, Safari, Opera
-    window.addEventListener('mousewheel', clickOrScrollHandler, false);
-    // Firefox
-    window.addEventListener('DOMMouseScroll', clickOrScrollHandler, false);
-    // Mobile
-    window.addEventListener('touchmove', clickOrScrollHandler, false);
-
-    return () => {
-      window.removeEventListener('click', clickOrScrollHandler, false);
-
-      // On utilie un listener en fonction du navigateur
-      // IE9, Chrome, Safari, Opera
-      window.removeEventListener('mousewheel', clickOrScrollHandler, false);
-      // Firefox
-      window.removeEventListener('DOMMouseScroll', clickOrScrollHandler, false);
-      // Mobile
-      window.removeEventListener('touchmove', clickOrScrollHandler, false);
-    };
-  });
 
   return (
     <Layout>
-      {/* Pour le SEO on utilise Helmet, on peut y rajouter tout les tags du Head que l'on veut pour cette page spécifiquement */}
       <Helmet>
-        <title>THANH TÂN| Ortolé Designer (Packshot)</title>
+        <title>THANH TÂN | Ortolé Designer (Packshot)</title>
         <meta
           name="description"
           content="Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux."
         />
       </Helmet>
 
-      <ModalImage image={imageModal} alt={altModal} display={displayModal} />
+      {/* Modal slide auto-play, desktop prev/next buttons, mobile swipe */}
+      <ModalImage
+        images={ortoleImages}
+        initialIndex={modalIndex}
+        display={displayModal}
+        autoPlay={true}
+        autoPlayInterval={3500}
+        onClose={() => setDisplayModal(false)}
+      />
 
       <Header url="/ortole-designer-packshot" />
       <div className={styles.container}>
@@ -95,52 +98,56 @@ const Project8 = (): JSX.Element => {
           >
             <source src="images/ortole-packshot/ortole-packshot.mp4" type="video/mp4" />
           </video>
+
           <div className={`${styles.row} ${styles.animation__transform_top}`}>
             <img
-              src="images/ortole-packshot/ortole-packshot-ethan-piboyeux-01.jpg"
-              alt="Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux."
-              onClick={handleImage}
+              src={ortoleImages[0].src}
+              alt={ortoleImages[0].alt}
+              onClick={() => handleOpenModal(0)}
             />
             <img
-              src="images/ortole-packshot/ortole-packshot-ethan-piboyeux-02.jpg"
-              alt="Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux."
-              onClick={handleImage}
+              src={ortoleImages[1].src}
+              alt={ortoleImages[1].alt}
+              onClick={() => handleOpenModal(1)}
             />
           </div>
+
           <div className={`${styles.row} ${styles.animation__transform_top}`}>
             <img
-              src="images/ortole-packshot/ortole-packshot-ethan-piboyeux-03.jpg"
-              alt="Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux."
-              onClick={handleImage}
+              src={ortoleImages[2].src}
+              alt={ortoleImages[2].alt}
+              onClick={() => handleOpenModal(2)}
             />
             <img
-              src="images/ortole-packshot/ortole-packshot-ethan-piboyeux-04.jpg"
-              alt="Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux."
-              onClick={handleImage}
+              src={ortoleImages[3].src}
+              alt={ortoleImages[3].alt}
+              onClick={() => handleOpenModal(3)}
             />
           </div>
+
           <div className={`${styles.row} ${styles.animation__transform_top}`}>
             <img
-              src="images/ortole-packshot/ortole-packshot-ethan-piboyeux-05.jpg"
-              alt="Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux."
-              onClick={handleImage}
+              src={ortoleImages[4].src}
+              alt={ortoleImages[4].alt}
+              onClick={() => handleOpenModal(4)}
             />
             <img
-              src="images/ortole-packshot/ortole-packshot-ethan-piboyeux-06.jpg"
-              alt="Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux."
-              onClick={handleImage}
+              src={ortoleImages[5].src}
+              alt={ortoleImages[5].alt}
+              onClick={() => handleOpenModal(5)}
             />
           </div>
+
           <div className={`${styles.row} ${styles.animation__transform_top}`}>
             <img
-              src="images/ortole-packshot/ortole-packshot-ethan-piboyeux-07.jpg"
-              alt="Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux."
-              onClick={handleImage}
+              src={ortoleImages[6].src}
+              alt={ortoleImages[6].alt}
+              onClick={() => handleOpenModal(6)}
             />
             <img
-              src="images/ortole-packshot/ortole-packshot-ethan-piboyeux-08.jpg"
-              alt="Direction artistique, shooting packshot photo et vidéo pour la mise en avant de collection de lunettes pour Ortolé Designer (Tropical Optic Shop), réalisé par Ethan Piboyeux."
-              onClick={handleImage}
+              src={ortoleImages[7].src}
+              alt={ortoleImages[7].alt}
+              onClick={() => handleOpenModal(7)}
             />
           </div>
         </div>

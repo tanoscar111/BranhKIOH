@@ -5,28 +5,35 @@ import styles from './Home.module.sass';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import ProjectHomePage from 'components/ProjectHomePage';
+import Intro from 'components/Intro';
 
 const Home = (): JSX.Element => {
   const [displayMouse, setDisplayMouse] = useState(true);
 
   // Fonction pour enlever l'animation de la souris après un certain temps
-  setTimeout(() => {
-    setDisplayMouse(false);
-  }, 3000 + 6000); // 3000 c'est le temps avant l'apparition, puis on ajoute le temps qu'il faut avant de le faire disparaître
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDisplayMouse(false);
+    }, 9000);
+    return () => clearTimeout(timer);
+  }, []);
 
-  // Fonction pour être en haut de la page quand on arrive sur une page --> merci React.js
+  // Fonction pour être en haut de la page quand on arrive sur une page
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
     <Layout>
-      {/* Pour le SEO on utilise Helmet, on peut y rajouter tout les tags du Head que l'on veut pour cette page spécifiquement */}
+      {/* Intro Animation GSAP */}
+      <Intro />
+
+      {/* SEO */}
       <Helmet>
         <title>THANH TÂN | KIOH</title>
         <meta
           name="description"
-          content="Ethan est un jeune vidéaste, graphiste et photographe basé sur Bordeaux. Il est spécialisé dans la direction artistique et la réalisation. Sa vision artistique est influencé par le monde urbain et le monde du luxe."
+          content="Thanh Tân | KIOH - Directeur artistique, vidéaste et graphiste basé sur Bordeaux. Vision artistique influencée par le monde urbain et le monde du luxe."
         />
       </Helmet>
 

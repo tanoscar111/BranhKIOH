@@ -1,6 +1,7 @@
 import { HelmetProvider } from 'react-helmet-async';
 import Router from './router';
 import Cursor from 'components/Cursor';
+import AssistiveTouch from 'components/AssistiveTouch';
 import './App.module.sass';
 
 const App = (): JSX.Element => {
@@ -24,6 +25,7 @@ const App = (): JSX.Element => {
   return (
     <HelmetProvider>
       {!mobileAndTabletCheck() && <Cursor />}
+      <AssistiveTouch />
       <Router />
     </HelmetProvider>
   );

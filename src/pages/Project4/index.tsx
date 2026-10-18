@@ -6,82 +6,74 @@ import Header from 'components/Header';
 import HeaderProject from 'components/HeaderProject';
 import LinkNextProject from 'components/LinkNextProject';
 import Credits from 'components/Credits';
-import ModalImage from 'components/ModalImage';
+import ModalImage, { ModalImageItem } from 'components/ModalImage';
+
+const projectImages: ModalImageItem[] = [
+  {
+    src: 'images/trieste/trieste-ethan-piboyeux-4.jpg',
+    alt: 'Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek.',
+  },
+  {
+    src: 'images/trieste/trieste-ethan-piboyeux-7.jpg',
+    alt: 'Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek.',
+  },
+  {
+    src: 'images/trieste/trieste-ethan-piboyeux-6.jpg',
+    alt: 'Trieste est un projet de site interactif et artistique en collaboration với le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek.',
+  },
+  {
+    src: 'images/trieste/trieste-ethan-piboyeux-5.jpg',
+    alt: 'Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek.',
+  },
+  {
+    src: 'images/trieste/trieste-ethan-piboyeux-2.jpg',
+    alt: 'Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek.',
+  },
+  {
+    src: 'images/trieste/trieste-ethan-piboyeux-3.jpg',
+    alt: 'Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek.',
+  },
+];
 
 const Project4 = (): JSX.Element => {
-  // Fonction pour être en haut de la page quand on arrive sur une page --> merci React.js
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Les variables pour le modal des images
-  const [imageModal, setImageModal] = useState<string>('');
-  const [altModal, setAltModal] = useState<string>('');
+  const [modalIndex, setModalIndex] = useState<number>(0);
   const [displayModal, setDisplayModal] = useState<boolean>(false);
 
-  // Fonction pour changer l'image en fonction de l'image sur laquelle on clique
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleImage = (e: any) => {
-    // On affiche le modal uniquement si l'écran est supérieur à 900px --> quand on est en row
-    if (window.innerWidth > 900) {
-      setImageModal((e.target as HTMLImageElement).src);
-      setAltModal((e.target as HTMLImageElement).alt);
-      setDisplayModal(true);
-    }
+  const handleOpenModal = (index: number) => {
+    setModalIndex(index);
+    setDisplayModal(true);
   };
-  // Fonction pour cacher l'image au clique ou au scroll
-  useEffect(() => {
-    // On désactive l'image si et seulement si l'image est déjà activé
-    const clickOrScrollHandler = () => {
-      if (displayModal) {
-        setDisplayModal(false);
-      }
-    };
-
-    // On utilie un listener pour chaque clique
-    window.addEventListener('click', clickOrScrollHandler, false);
-
-    // On utilie un listener en fonction du navigateur
-    // IE9, Chrome, Safari, Opera
-    window.addEventListener('mousewheel', clickOrScrollHandler, false);
-    // Firefox
-    window.addEventListener('DOMMouseScroll', clickOrScrollHandler, false);
-    // Mobile
-    window.addEventListener('touchmove', clickOrScrollHandler, false);
-
-    return () => {
-      window.removeEventListener('click', clickOrScrollHandler, false);
-
-      // On utilie un listener en fonction du navigateur
-      // IE9, Chrome, Safari, Opera
-      window.removeEventListener('mousewheel', clickOrScrollHandler, false);
-      // Firefox
-      window.removeEventListener('DOMMouseScroll', clickOrScrollHandler, false);
-      // Mobile
-      window.removeEventListener('touchmove', clickOrScrollHandler, false);
-    };
-  });
 
   return (
     <Layout>
-      {/* Pour le SEO on utilise Helmet, on peut y rajouter tout les tags du Head que l'on veut pour cette page spécifiquement */}
       <Helmet>
-        <title>THANH TÂN| Trieste</title>
+        <title>THANH TÂN | Trieste</title>
         <meta
           name="description"
           content="Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek."
         />
       </Helmet>
 
-      <ModalImage image={imageModal} alt={altModal} display={displayModal} />
+      <ModalImage
+        images={projectImages}
+        initialIndex={modalIndex}
+        display={displayModal}
+        autoPlay={true}
+        autoPlayInterval={3500}
+        onClose={() => setDisplayModal(false)}
+      />
 
       <Header url="/trieste" />
       <div className={styles.container}>
         <HeaderProject
           title="Trieste"
           index={4}
-          titleLink="Essayer le jeu"
-          link="https://trieste.netlify.app/"
+          titleLink="Découvrir le projet"
+          link="http://trieste.marclacault.fr/"
           year={2021}
           services={['Direction artistique', 'Design graphique', 'Écriture de scénario']}
         />
@@ -94,38 +86,38 @@ const Project4 = (): JSX.Element => {
         <div className={styles.images__container}>
           <div className={`${styles.row} ${styles.animation__transform_top}`}>
             <img
-              src="images/trieste/trieste-ethan-piboyeux-4.jpg"
-              alt="Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek."
-              onClick={handleImage}
+              src={projectImages[0].src}
+              alt={projectImages[0].alt}
+              onClick={() => handleOpenModal(0)}
             />
             <img
-              src="images/trieste/trieste-ethan-piboyeux-7.jpg"
-              alt="Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek."
-              onClick={handleImage}
-            />
-          </div>
-          <div className={`${styles.row} ${styles.animation__transform_top}`}>
-            <img
-              src="images/trieste/trieste-ethan-piboyeux-6.jpg"
-              alt="Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek."
-              onClick={handleImage}
-            />
-            <img
-              src="images/trieste/trieste-ethan-piboyeux-5.jpg"
-              alt="Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek."
-              onClick={handleImage}
+              src={projectImages[1].src}
+              alt={projectImages[1].alt}
+              onClick={() => handleOpenModal(1)}
             />
           </div>
           <div className={`${styles.row} ${styles.animation__transform_top}`}>
             <img
-              src="images/trieste/trieste-ethan-piboyeux-2.jpg"
-              alt="Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek."
-              onClick={handleImage}
+              src={projectImages[2].src}
+              alt={projectImages[2].alt}
+              onClick={() => handleOpenModal(2)}
             />
             <img
-              src="images/trieste/trieste-ethan-piboyeux-3.jpg"
-              alt="Trieste est un projet de site interactif et artistique en collaboration avec le musée des Beaux-Arts de Bordeaux dans le cadre de la Bacchaweek."
-              onClick={handleImage}
+              src={projectImages[3].src}
+              alt={projectImages[3].alt}
+              onClick={() => handleOpenModal(3)}
+            />
+          </div>
+          <div className={`${styles.row} ${styles.animation__transform_top}`}>
+            <img
+              src={projectImages[4].src}
+              alt={projectImages[4].alt}
+              onClick={() => handleOpenModal(4)}
+            />
+            <img
+              src={projectImages[5].src}
+              alt={projectImages[5].alt}
+              onClick={() => handleOpenModal(5)}
             />
           </div>
         </div>
@@ -144,19 +136,15 @@ const Project4 = (): JSX.Element => {
                 },
                 {
                   name: 'Tristan Guillemot',
-                  role: 'Écriture, Motion design',
+                  role: 'Développeur web',
                 },
                 {
-                  name: 'Sami Lafrance',
-                  role: 'Développeur interactif',
+                  name: 'Mael Aurensan',
+                  role: 'Développeur web, 3D',
                 },
                 {
                   name: 'Marc Lacault',
-                  role: 'Sound design, Musiques',
-                },
-                {
-                  name: 'Beaux-Arts, Bordeaux',
-                  role: 'Collaborateur',
+                  role: 'Sound design, Écriture',
                 },
               ]}
             />

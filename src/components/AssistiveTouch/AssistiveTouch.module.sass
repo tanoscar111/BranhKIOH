@@ -1,0 +1,580 @@
+@import 'styles/variables'
+@import 'styles/animations'
+
+.wrapper
+  position: fixed
+  top: 0
+  left: 0
+  width: 0
+  height: 0
+  z-index: 9500
+  user-select: none
+
+// Logo chỉ hình tròn và không có khung vuông bên ngoài
+.bubble
+  position: fixed
+  width: 5.6rem
+  height: 5.6rem
+  border-radius: 50%
+  background: radial-gradient(circle at 30% 30%, #262629, #09090b 75%)
+  border: 1.5px solid rgba(255, 255, 255, 0.4)
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.75), inset 0 1px 2px rgba(255, 255, 255, 0.35)
+  display: flex
+  align-items: center
+  justify-content: center
+  cursor: grab
+  touch-action: none
+  z-index: 9501
+  padding: 0
+  outline: none
+  transition: opacity 0.35s ease, transform 0.2s ease, border-color 0.25s ease, box-shadow 0.25s ease
+
+  &.idle
+    opacity: 0.55
+
+  &:hover, &.active, &.dragging
+    opacity: 1
+    border-color: #ffffff
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.9), 0 0 18px rgba(255, 255, 255, 0.25)
+
+  &.dragging
+    cursor: grabbing
+    transform: scale(1.08)
+
+  &.snapping
+    transition: left 0.38s cubic-bezier(0.22, 1, 0.36, 1), top 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease, transform 0.2s ease
+
+  @media screen and (max-width: 600px)
+    width: 5.2rem
+    height: 5.2rem
+
+.logoText
+  font-family: $main-font
+  font-weight: 700
+  font-size: 1.3rem
+  letter-spacing: 0.08em
+  color: #ffffff
+  line-height: 1
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8)
+  pointer-events: none
+
+  @media screen and (max-width: 600px)
+    font-size: 1.2rem
+
+.statusDot
+  position: absolute
+  bottom: 0.15rem
+  right: 0.15rem
+  width: 1.15rem
+  height: 1.15rem
+  border-radius: 50%
+  background: #22c55e
+  border: 2px solid #09090b
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.9)
+  pointer-events: none
+
+  &.away
+    background: #f59e0b
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.8)
+
+.unreadBadge
+  position: absolute
+  top: -0.3rem
+  left: -0.3rem
+  min-width: 1.9rem
+  height: 1.9rem
+  padding: 0 0.4rem
+  border-radius: 50%
+  background: #ef4444
+  color: #ffffff
+  font-family: $main-font
+  font-size: 1.05rem
+  font-weight: 700
+  display: flex
+  align-items: center
+  justify-content: center
+  border: 2px solid #09090b
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.65)
+  pointer-events: none
+
+.chatPanel
+  position: fixed
+  width: 36rem
+  max-width: calc(100vw - 2.4rem)
+  height: 52rem
+  max-height: calc(100dvh - 10rem)
+  background: rgba(12, 12, 14, 0.96)
+  backdrop-filter: blur(24px)
+  -webkit-backdrop-filter: blur(24px)
+  border: 1px solid rgba(255, 255, 255, 0.18)
+  border-radius: 2rem
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.88), 0 0 0 1px rgba(255, 255, 255, 0.06)
+  display: flex
+  flex-direction: column
+  overflow: hidden
+  z-index: 9502
+  animation: panelAppear 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards
+
+  @media screen and (max-width: 600px)
+    left: 1.2rem !important
+    right: 1.2rem !important
+    bottom: 7.8rem !important
+    top: auto !important
+    width: calc(100vw - 2.4rem)
+    height: 46rem
+    max-height: calc(100dvh - 9.5rem)
+
+@keyframes panelAppear
+  0%
+    opacity: 0
+    transform: scale(0.92) translateY(10px)
+  100%
+    opacity: 1
+    transform: scale(1) translateY(0)
+
+.chatHeader
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 1.3rem 1.5rem
+  background: rgba(255, 255, 255, 0.04)
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+
+.brandInfo
+  display: flex
+  align-items: center
+  gap: 1rem
+
+.avatarBox
+  position: relative
+  width: 3.8rem
+  height: 3.8rem
+  border-radius: 50%
+  background: #000000
+  border: 1.5px solid rgba(255, 255, 255, 0.35)
+  display: flex
+  align-items: center
+  justify-content: center
+  font-family: $main-font
+  font-weight: 700
+  font-size: 1.05rem
+  letter-spacing: 0.05em
+  color: #ffffff
+  flex-shrink: 0
+
+.avatarOnline
+  position: absolute
+  bottom: -0.1rem
+  right: -0.1rem
+  width: 1.05rem
+  height: 1.05rem
+  border-radius: 50%
+  background: #22c55e
+  border: 2px solid #0c0c0e
+
+  &.away
+    background: #f59e0b
+
+.headerTexts
+  display: flex
+  flex-direction: column
+  gap: 0.2rem
+
+.headerTitle
+  font-family: $main-font
+  font-size: 1.4rem
+  font-weight: 700
+  color: #ffffff
+  margin: 0
+
+.headerSub
+  font-family: $main-font
+  font-size: 1.1rem
+  font-weight: 400
+  color: #4ade80
+  margin: 0
+  display: flex
+  align-items: center
+  gap: 0.4rem
+
+  &.awayText
+    color: #fbbf24
+
+.headerActions
+  display: flex
+  align-items: center
+  gap: 0.6rem
+
+.fbProfileLink
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  width: 3.1rem
+  height: 3.1rem
+  border-radius: 50%
+  background: rgba(24, 119, 242, 0.2)
+  border: 1px solid rgba(24, 119, 242, 0.5)
+  color: #60a5fa
+  font-family: $main-font
+  font-weight: 700
+  font-size: 1.4rem
+  text-decoration: none
+  transition: all 0.2s ease
+  &::before
+    display: none
+  &:hover
+    background: #1877f2
+    color: #ffffff
+    border-color: #1877f2
+
+.closePanelBtn
+  width: 3.1rem
+  height: 3.1rem
+  border-radius: 50%
+  background: rgba(255, 255, 255, 0.08)
+  border: 1px solid rgba(255, 255, 255, 0.15)
+  color: rgba(255, 255, 255, 0.8)
+  font-size: 1.7rem
+  line-height: 1
+  display: flex
+  align-items: center
+  justify-content: center
+  cursor: pointer
+  transition: all 0.2s ease
+  &:hover
+    background: #ffffff
+    color: #000000
+
+// Khu vực đăng nhập / hiển thị tài khoản Facebook khách hàng
+.userAuthBar
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 0.85rem 1.5rem
+  background: rgba(24, 119, 242, 0.12)
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08)
+  gap: 0.8rem
+
+.loggedUserBox
+  display: flex
+  align-items: center
+  gap: 0.8rem
+  min-width: 0
+
+.userAvatarWrapper
+  position: relative
+  width: 2.8rem
+  height: 2.8rem
+  flex-shrink: 0
+
+.userAvatarImg
+  width: 2.8rem
+  height: 2.8rem
+  border-radius: 50%
+  object-fit: cover
+  border: 1.5px solid #1877f2
+
+.fbSmallBadge
+  position: absolute
+  bottom: -0.2rem
+  right: -0.2rem
+  width: 1.25rem
+  height: 1.25rem
+  border-radius: 50%
+  background: #1877f2
+  color: #ffffff
+  font-family: $main-font
+  font-weight: 700
+  font-size: 0.85rem
+  display: flex
+  align-items: center
+  justify-content: center
+  border: 1.5px solid #0c0c0e
+
+.userNameText
+  font-family: $main-font
+  font-size: 1.2rem
+  font-weight: 700
+  color: #ffffff
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+
+.userStatusSub
+  font-family: $main-font
+  font-size: 1rem
+  color: rgba(255, 255, 255, 0.6)
+  display: block
+
+.fbLoginBtn
+  display: inline-flex
+  align-items: center
+  gap: 0.5rem
+  padding: 0.55rem 1.1rem
+  border-radius: 0.8rem
+  background: #1877f2
+  border: none
+  color: #ffffff
+  font-family: $main-font
+  font-size: 1.15rem
+  font-weight: 700
+  cursor: pointer
+  white-space: nowrap
+  transition: background 0.2s ease
+  &:hover
+    background: #2563eb
+
+.logoutBtn
+  background: rgba(255, 255, 255, 0.08)
+  border: 1px solid rgba(255, 255, 255, 0.18)
+  color: rgba(255, 255, 255, 0.75)
+  font-family: $main-font
+  font-size: 1.05rem
+  padding: 0.4rem 0.8rem
+  border-radius: 0.6rem
+  cursor: pointer
+  white-space: nowrap
+  &:hover
+    background: rgba(255, 255, 255, 0.18)
+    color: #ffffff
+
+.loginFormDrawer
+  padding: 1rem 1.5rem
+  background: rgba(20, 24, 34, 0.95)
+  border-bottom: 1px solid rgba(24, 119, 242, 0.35)
+  display: flex
+  flex-direction: column
+  gap: 0.7rem
+
+.loginFormNote
+  font-family: $main-font
+  font-size: 1.1rem
+  color: rgba(255, 255, 255, 0.8)
+  margin: 0
+  line-height: 1.35
+
+.loginFormInputs
+  display: flex
+  gap: 0.6rem
+
+.loginInput
+  flex: 1
+  background: rgba(255, 255, 255, 0.08)
+  border: 1px solid rgba(255, 255, 255, 0.2)
+  border-radius: 0.8rem
+  padding: 0.65rem 0.9rem
+  color: #ffffff
+  font-family: $main-font
+  font-size: 1.2rem
+  outline: none
+  &:focus
+    border-color: #1877f2
+
+.loginConfirmBtn
+  background: #1877f2
+  color: #ffffff
+  border: none
+  border-radius: 0.8rem
+  padding: 0 1.1rem
+  font-family: $main-font
+  font-size: 1.15rem
+  font-weight: 700
+  cursor: pointer
+  &:hover
+    background: #2563eb
+
+.noticeBanner
+  padding: 0.55rem 1.5rem
+  background: rgba(34, 197, 94, 0.14)
+  border-bottom: 1px solid rgba(34, 197, 94, 0.25)
+  font-family: $main-font
+  font-size: 1.08rem
+  color: #86efac
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 0.6rem
+
+.messagesArea
+  flex: 1
+  padding: 1.3rem 1.5rem
+  overflow-y: auto
+  display: flex
+  flex-direction: column
+  gap: 1.1rem
+
+  &::-webkit-scrollbar
+    width: 4px
+  &::-webkit-scrollbar-thumb
+    background: rgba(255, 255, 255, 0.2)
+    border-radius: 2px
+
+.messageRow
+  display: flex
+  flex-direction: column
+  max-width: 88%
+
+  &.incoming
+    align-self: flex-start
+    align-items: flex-start
+
+  &.outgoing
+    align-self: flex-end
+    align-items: flex-end
+
+.senderHeader
+  display: flex
+  align-items: center
+  gap: 0.55rem
+  margin-bottom: 0.35rem
+
+.msgAvatar
+  width: 2rem
+  height: 2rem
+  border-radius: 50%
+  object-fit: cover
+  border: 1px solid rgba(255, 255, 255, 0.35)
+
+.msgKiohBadge
+  width: 2rem
+  height: 2rem
+  border-radius: 50%
+  background: #000000
+  border: 1px solid rgba(255, 255, 255, 0.45)
+  color: #ffffff
+  font-family: $main-font
+  font-size: 0.65rem
+  font-weight: 700
+  display: flex
+  align-items: center
+  justify-content: center
+
+.senderNameLabel
+  font-family: $main-font
+  font-size: 1.05rem
+  font-weight: 700
+  color: rgba(255, 255, 255, 0.75)
+
+.messageBubble
+  padding: 0.95rem 1.25rem
+  border-radius: 1.4rem
+  font-family: $main-font
+  font-size: 1.28rem
+  line-height: 1.45
+  word-break: break-word
+
+  .incoming &
+    background: rgba(255, 255, 255, 0.1)
+    color: #ffffff
+    border-bottom-left-radius: 0.4rem
+    border: 1px solid rgba(255, 255, 255, 0.08)
+
+  .outgoing &
+    background: #1877f2
+    color: #ffffff
+    border-bottom-right-radius: 0.4rem
+
+.messageMeta
+  font-family: $main-font
+  font-size: 1.02rem
+  color: rgba(255, 255, 255, 0.48)
+  margin-top: 0.3rem
+  display: flex
+  align-items: center
+  gap: 0.6rem
+
+.forwardLink
+  color: #60a5fa
+  text-decoration: none
+  font-weight: 700
+  &::before
+    display: none
+  &:hover
+    text-decoration: underline
+
+.quickReplies
+  display: flex
+  gap: 0.6rem
+  padding: 0 1.5rem 0.8rem 1.5rem
+  overflow-x: auto
+  &::-webkit-scrollbar
+    height: 0
+
+.quickReplyBtn
+  background: rgba(255, 255, 255, 0.06)
+  border: 1px solid rgba(255, 255, 255, 0.16)
+  color: rgba(255, 255, 255, 0.88)
+  font-family: $main-font
+  font-size: 1.12rem
+  padding: 0.45rem 0.95rem
+  border-radius: 0.8rem
+  white-space: nowrap
+  cursor: pointer
+  transition: all 0.2s ease
+  &:hover
+    background: rgba(255, 255, 255, 0.16)
+    color: #ffffff
+    border-color: rgba(255, 255, 255, 0.4)
+
+.directToggleRow
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 0.55rem 1.5rem
+  background: rgba(255, 255, 255, 0.02)
+  border-top: 1px solid rgba(255, 255, 255, 0.07)
+  font-family: $main-font
+  font-size: 1.1rem
+  color: rgba(255, 255, 255, 0.72)
+
+.directLabel
+  display: flex
+  align-items: center
+  gap: 0.5rem
+  cursor: pointer
+
+.inputBar
+  display: flex
+  align-items: center
+  gap: 0.8rem
+  padding: 1rem 1.4rem
+  background: rgba(255, 255, 255, 0.03)
+  border-top: 1px solid rgba(255, 255, 255, 0.1)
+
+.chatInput
+  flex: 1
+  background: rgba(255, 255, 255, 0.08)
+  border: 1px solid rgba(255, 255, 255, 0.16)
+  border-radius: 1.2rem
+  padding: 0.85rem 1.2rem
+  color: #ffffff
+  font-family: $main-font
+  font-size: 1.28rem
+  outline: none
+  transition: border-color 0.2s ease
+  &::placeholder
+    color: rgba(255, 255, 255, 0.4)
+  &:focus
+    border-color: #1877f2
+
+.sendBtn
+  width: 3.8rem
+  height: 3.8rem
+  border-radius: 50%
+  background: #1877f2
+  color: #ffffff
+  border: none
+  display: flex
+  align-items: center
+  justify-content: center
+  cursor: pointer
+  font-size: 1.45rem
+  font-weight: 700
+  flex-shrink: 0
+  transition: all 0.2s ease
+  &:hover:not(:disabled)
+    background: #2563eb
+    transform: scale(1.05)
+  &:disabled
+    opacity: 0.35
+    cursor: not-allowed
